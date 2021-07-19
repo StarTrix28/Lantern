@@ -3,11 +3,10 @@ from tkinter.filedialog import asksaveasfilename, askopenfilename
 import subprocess
 import keyboard
 
-
 compiler = Tk()
 compiler.title('')
 file_path = ''
-helper = True
+filetypes = [('Python Files', '*.py'),('Java Files', '*.java')]
 
 def set_file_path(path):
     global file_path
@@ -15,28 +14,27 @@ def set_file_path(path):
 
 
 def open_file():
-    path = askopenfilename(filetypes=[('Python Files', '*.py')])
+    global filetypes
+    path = askopenfilename(filetypes=filetypes)
     with open(path, 'r') as file:
         code = file.read()
         editor.delete('1.0', END)
         editor.insert('1.0', code)
         set_file_path(path)
-
-
 def save_as():
+    global filetypes
     if file_path == '':
-        path = asksaveasfilename(filetypes=[('Python Files', '*.py')])
+        path = asksaveasfilename(filetypes=filetypes)
     else:
         path = file_path
     with open(path, 'w') as file:
         code = editor.get('1.0', END)
         file.write(code)
         set_file_path(path)
-
-
 def run():
+    global filetypes
     if file_path == '':
-        path = asksaveasfilename(filetypes=[('Python Files', '*.py')])
+        path = asksaveasfilename(filetypes=filetypes)
         set_file_path(path)
         return
     command = f'python {file_path}'
@@ -49,35 +47,30 @@ def run():
 def type(word):
     keyboard.write(word)
 
-
-def zavorky(word):
-    keyboard.write(word)
-
-
-def Helperturn():
-    global helper
-    if helper == True:
-        helper = False
-    if helper == False:
-        helper = True
-
-
 class Helper:
-    global helper
-    if helper == True:
-        #qwertz
-        keyboard.add_hotkey('SHIFT+)', lambda: type(")"),timeout=0)
-        keyboard.add_hotkey('CTRL+ALT+f', lambda: type("]"),timeout=0)
-        keyboard.add_hotkey('CTRL+ALT+b', lambda: type("}"),timeout=0)
-        #qwerty
-        keyboard.add_hotkey('SHIFT+9', lambda: type(")"),timeout=0)
-        keyboard.add_hotkey('[', lambda: type("]"),timeout=0)
-        keyboard.add_hotkey('SHIFT+[', lambda: type("}"),timeout=0)
+    # qwerty
 
+    keyboard.add_hotkey('SHIFT+)', lambda: type(")"), timeout=0)
+    keyboard.add_hotkey('CTRL+ALT+f', lambda: type("]"), timeout=0)
+    keyboard.add_hotkey('CTRL+ALT+b', lambda: type("}"), timeout=0)
+    # qwerty
 
+    keyboard.add_hotkey('SHIFT+9', lambda: type(")"), timeout=0)
+    keyboard.add_hotkey('[', lambda: type("]"), timeout=0)
+    keyboard.add_hotkey('SHIFT+[', lambda: type("}"), timeout=0)
 class ShortCuts:
-    keyboard.add_hotkey('CTRL+b', lambda: run(),timeout=0)
-    keyboard.add_hotkey('CTRL+s', lambda: type("]"),timeout=0)
+    class main:
+        keyboard.add_hotkey('CTRL+b', lambda: run(), timeout=0)
+        keyboard.add_hotkey('CTRL+s', lambda: type("]"), timeout=0)
+    class python:
+        keyboard.add_hotkey('CTRL+ALT+c', lambda: type("class classname:"), timeout=0)
+        keyboard.add_hotkey('CTRL+ALT+d', lambda: type("def defname:"), timeout=0)
+"""
+def java_class_create():
+    editor.insert(END,'''class classname {
+
+}''')
+"""
 
 
 menu_bar = Menu(compiler)
@@ -99,10 +92,14 @@ class menu:
         run_bar.add_command(label='Run', command=run)
         menu_bar.add_cascade(label='Run', menu=run_bar)
 
-    class ToolMenu:
+    class toolmenu:
         global menu_bar
         tool_bar = Menu(menu_bar, tearoff=0)
-        tool_bar.add_command(label='Helper', command=Helperturn)
+        """
+        jav_subbar = Menu(tool_bar, tearoff=0)
+        jav_subbar.add_command(label='class', command=java_class_create)
+        tool_bar.add_cascade(label='Java', menu=jav_subbar)
+        """
         menu_bar.add_cascade(label='Tools', menu=tool_bar)
 
     compiler.config(menu=menu_bar)
