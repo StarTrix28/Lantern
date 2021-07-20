@@ -5,14 +5,14 @@ import keyboard
 
 compiler = Tk()
 compiler.title('')
+compiler.iconbitmap("Lantern.ico")
 file_path = ''
-filetypes = [('Python Files', '*.py'),('Java Files', '*.java')]
+filetypes = [('Python Files', '*.py'), ('Java Files', '*.java')]
+
 
 def set_file_path(path):
     global file_path
     file_path = path
-
-
 def open_file():
     global filetypes
     path = askopenfilename(filetypes=filetypes)
@@ -47,6 +47,7 @@ def run():
 def type(word):
     keyboard.write(word)
 
+
 class Helper:
     # qwerty
 
@@ -65,13 +66,14 @@ class ShortCuts:
     class python:
         keyboard.add_hotkey('CTRL+ALT+c', lambda: type("class classname:"), timeout=0)
         keyboard.add_hotkey('CTRL+ALT+d', lambda: type("def defname:"), timeout=0)
+
+
 """
 def java_class_create():
     editor.insert(END,'''class classname {
 
 }''')
 """
-
 
 menu_bar = Menu(compiler)
 
@@ -85,13 +87,11 @@ class menu:
         file_menu.add_command(label='Save As', command=save_as)
         file_menu.add_command(label='Exit', command=exit)
         menu_bar.add_cascade(label='File', menu=file_menu)
-
     class RunMenu:
         global menu_bar
         run_bar = Menu(menu_bar, tearoff=0)
         run_bar.add_command(label='Run', command=run)
         menu_bar.add_cascade(label='Run', menu=run_bar)
-
     class toolmenu:
         global menu_bar
         tool_bar = Menu(menu_bar, tearoff=0)
@@ -101,7 +101,6 @@ class menu:
         tool_bar.add_cascade(label='Java', menu=jav_subbar)
         """
         menu_bar.add_cascade(label='Tools', menu=tool_bar)
-
     compiler.config(menu=menu_bar)
 
 
