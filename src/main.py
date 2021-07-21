@@ -7,8 +7,7 @@ compiler.title('')
 compiler.iconbitmap("src\Lantern.ico")
 file_path = ''
 filetypes = [('Python Files', '*.py'), ('Java Files', '*.java')]
-command = f'python'
-
+command = ''
 def set_file_path(path):
     global file_path
     file_path = path
@@ -48,17 +47,14 @@ def Build_as(a):
         if a == 'java':
             command = f'java'
             return
+        if a == 'python':
+            command = f'python'
+            return
         return
-    if a == 'python':
-        command = f'python'
-        return
-
     elif file_path == '':
-        if file_path == '':
-            path = asksaveasfilename(filetypes=filetypes)
-            set_file_path(path)
-            return
-            return
+        path = asksaveasfilename(filetypes=filetypes)
+        set_file_path(path)
+        return
 def type(word):
     keyboard.write(word)
 
