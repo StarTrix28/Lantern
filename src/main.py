@@ -2,13 +2,12 @@ from tkinter import *
 from tkinter.filedialog import asksaveasfilename, askopenfilename
 import subprocess
 import keyboard
-
 compiler = Tk()
 compiler.title('')
-compiler.iconbitmap("Lantern.ico")
+compiler.iconbitmap("src\Lantern.ico")
 file_path = ''
 filetypes = [('Python Files', '*.py'), ('Java Files', '*.java')]
-
+command = f'python'
 
 def set_file_path(path):
     global file_path
@@ -33,17 +32,33 @@ def save_as():
         set_file_path(path)
 def run():
     global filetypes
+    global command
     if file_path == '':
         path = asksaveasfilename(filetypes=filetypes)
         set_file_path(path)
         return
-    command = f'python {file_path}'
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     output, error = process.communicate()
     code_output.insert('1.0', output)
     code_output.insert('1.0', error)
+def Build_as(a):
+    global filetypes
+    global command
+    if not(file_path == ''):
+        if a == 'java':
+            command = f'java'
+            return
+        return
+    if a == 'python':
+        command = f'python'
+        return
 
-
+    elif file_path == '':
+        if file_path == '':
+            path = asksaveasfilename(filetypes=filetypes)
+            set_file_path(path)
+            return
+            return
 def type(word):
     keyboard.write(word)
 
@@ -87,11 +102,15 @@ class menu:
         file_menu.add_command(label='Save As', command=save_as)
         file_menu.add_command(label='Exit', command=exit)
         menu_bar.add_cascade(label='File', menu=file_menu)
-    class RunMenu:
+    class BuildMenu:
         global menu_bar
-        run_bar = Menu(menu_bar, tearoff=0)
-        run_bar.add_command(label='Run', command=run)
-        menu_bar.add_cascade(label='Run', menu=run_bar)
+        build_bar = Menu(menu_bar, tearoff=0)
+        build_bar.add_command(label='Build', command=run)
+        buildas_subbar = Menu(build_bar, tearoff=0)
+        buildas_subbar.add_command(label='Python', comand=Build_as("python"))
+        buildas_subbar.add_command(label='Java', comand=Build_as("java"))
+        build_bar.add_cascade(label='Build As', menu=buildas_subbar)
+        menu_bar.add_cascade(label='Build', menu=build_bar)
     class toolmenu:
         global menu_bar
         tool_bar = Menu(menu_bar, tearoff=0)
