@@ -4,7 +4,6 @@ import subprocess
 import keyboard
 compiler = Tk()
 compiler.title('')
-compiler.iconbitmap('src/Lantern.ico')
 file_path = ''
 filetypes = [('Python Files', '*.py'), ('Java Files', '*.java')]
 command = ''
